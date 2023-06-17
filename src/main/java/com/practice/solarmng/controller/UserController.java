@@ -26,20 +26,20 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<User> getUser(@PathVariable long id) {
-        User user = userService.getUser(id);
+    public ResponseEntity<User> getUser(@PathVariable String username) {
+        User user = userService.getUser(username);
         return ResponseEntity.ok(user);
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable long id, @RequestBody User updatedUser) {
-        User user = userService.updateUser(id, updatedUser);
+    public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody User updatedUser) {
+        User user = userService.updateUser(username, updatedUser);
         return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable long id) {
-        userService.deleteUser(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
         return ResponseEntity.noContent().build();
     }
 

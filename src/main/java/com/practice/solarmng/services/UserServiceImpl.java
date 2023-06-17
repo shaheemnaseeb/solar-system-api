@@ -12,7 +12,6 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
-
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -29,8 +28,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(long id) {
-        Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
+    public User getUser(String username) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
 
         if (optionalUserEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
@@ -38,32 +37,32 @@ public class UserServiceImpl implements UserService {
             BeanUtils.copyProperties(userEntity, user);
             return user;
         } else {
-            throw new UserNotFoundException("User not found with ID: " + id);
+            throw new UserNotFoundException("User not found with username: " + username);
         }
     }
 
     @Override
-    public User updateUser(long id, User updatedUser) {
-        Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
-        updatedUser.setId(id);
+    public User updateUser(String username, User updatedUser) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(username);
         if (optionalUserEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
+            updatedUser.setId(userEntity.getId());
             BeanUtils.copyProperties(updatedUser, userEntity);
             userRepository.save(userEntity);
             return updatedUser;
         } else {
-            throw new UserNotFoundException("User not found with ID: " + id);
+            throw new UserNotFoundException("User not found with ID: " + username);
         }
     }
 
     @Override
-    public void deleteUser(long id) {
-        Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
+    public void deleteUser(String username) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
 
         if (optionalUserEntity.isPresent()) {
             userRepository.delete(optionalUserEntity.get());
         } else {
-            throw new UserNotFoundException("User not found with ID: " + id);
+            throw new UserNotFoundException("User not found with username: " + username);
         }
     }
 

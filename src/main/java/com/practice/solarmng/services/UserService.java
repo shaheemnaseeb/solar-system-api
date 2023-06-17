@@ -7,11 +7,11 @@ import java.util.Optional;
 public interface UserService {
     User createUser(User user);
 
-    User getUser(long id);
+    User getUser(String username);
 
-    User updateUser(long id, User user);
+    User updateUser(String username, User user);
 
-    void deleteUser(long id);
+    void deleteUser(String username);
 
     User loginUser(User username);
 
