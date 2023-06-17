@@ -28,8 +28,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String username) {
-        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
+    public User getUser(long id) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
 
         if (optionalUserEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
@@ -37,13 +37,13 @@ public class UserServiceImpl implements UserService {
             BeanUtils.copyProperties(userEntity, user);
             return user;
         } else {
-            throw new UserNotFoundException("User not found with username: " + username);
+            throw new UserNotFoundException("User not found with username: " + id);
         }
     }
 
     @Override
-    public User updateUser(String username, User updatedUser) {
-        Optional<UserEntity> optionalUserEntity = userRepository.findById(username);
+    public User updateUser(long id, User updatedUser) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
         if (optionalUserEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
             updatedUser.setId(userEntity.getId());
@@ -51,18 +51,18 @@ public class UserServiceImpl implements UserService {
             userRepository.save(userEntity);
             return updatedUser;
         } else {
-            throw new UserNotFoundException("User not found with ID: " + username);
+            throw new UserNotFoundException("User not found with ID: " + id);
         }
     }
 
     @Override
-    public void deleteUser(String username) {
-        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
+    public void deleteUser(long id) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
 
         if (optionalUserEntity.isPresent()) {
             userRepository.delete(optionalUserEntity.get());
         } else {
-            throw new UserNotFoundException("User not found with username: " + username);
+            throw new UserNotFoundException("User not found with username: " + id);
         }
     }
 
